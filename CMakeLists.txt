@@ -12,6 +12,11 @@ set(SOURCES
   ${LIBUVDIR}/src/loop-watcher.c
   ${LIBUVDIR}/src/timer.c)
 
+set(HEADERS
+  ${LIBUVDIR}/src/heap-inl.h
+  ${LIBUVDIR}/src/queue.h
+  ${LIBUVDIR}/src/uv-common.h)
+
 if(WIN32)
   add_definitions(-DWIN32_LEAN_AND_MEAN -D_WIN32_WINNT=0x0600 -D_CRT_SECURE_NO_WARNINGS)
   include_directories(${LIBUVDIR}/src/win)
@@ -39,6 +44,15 @@ if(WIN32)
     ${LIBUVDIR}/src/win/util.c
     ${LIBUVDIR}/src/win/winapi.c
     ${LIBUVDIR}/src/win/winsock.c)
+
+  set(HEADERS ${HEADERS}
+    ${LIBUVDIR}/src/win/winsock.h
+    ${LIBUVDIR}/src/win/winapi.h
+    ${LIBUVDIR}/src/win/stream-inl.h
+    ${LIBUVDIR}/src/win/req-inl.h
+    ${LIBUVDIR}/src/win/internal.h
+    ${LIBUVDIR}/src/win/handle-inl.h)
+
 else()
   if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     add_definitions(-D_GNU_SOURCE)
@@ -90,10 +104,16 @@ else()
     ${LIBUVDIR}/src/unix/timer.c
     ${LIBUVDIR}/src/unix/tty.c
     ${LIBUVDIR}/src/unix/udp.c)
+
+  set(HEADERS ${HEADERS}
+    ${LIBUVDIR}/src/unix/spinlock.h
+    ${LIBUVDIR}/src/unix/linux-syscalls.h
+    ${LIBUVDIR}/src/unix/internal.h
+    ${LIBUVDIR}/src/unix/atomic-ops.h)
+
 endif()
 
-message(STATUS ${SOURCES})
-add_library(uv ${SOURCES})
+add_library(uv ${SOURCES} ${HEADERS})
 
 if(WIN32)
   target_link_libraries(uv ws2_32 psapi iphlpapi shell32 userenv)
