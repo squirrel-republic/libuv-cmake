@@ -8,7 +8,9 @@ set(SOURCES
   ${LIBUVDIR}/src/inet.c
   ${LIBUVDIR}/src/threadpool.c
   ${LIBUVDIR}/src/uv-common.c
-  ${LIBUVDIR}/src/version.c)
+  ${LIBUVDIR}/src/version.c
+  ${LIBUVDIR}/src/loop-watcher.c
+  ${LIBUVDIR}/src/timer.c)
 
 if(WIN32)
   add_definitions(-DWIN32_LEAN_AND_MEAN -D_WIN32_WINNT=0x0600 -D_CRT_SECURE_NO_WARNINGS)
@@ -23,7 +25,6 @@ if(WIN32)
     ${LIBUVDIR}/src/win/getaddrinfo.c
     ${LIBUVDIR}/src/win/getnameinfo.c
     ${LIBUVDIR}/src/win/handle.c
-    ${LIBUVDIR}/src/win/loop-watcher.c
     ${LIBUVDIR}/src/win/pipe.c
     ${LIBUVDIR}/src/win/poll.c
     ${LIBUVDIR}/src/win/process-stdio.c
@@ -33,7 +34,6 @@ if(WIN32)
     ${LIBUVDIR}/src/win/stream.c
     ${LIBUVDIR}/src/win/tcp.c
     ${LIBUVDIR}/src/win/thread.c
-    ${LIBUVDIR}/src/win/timer.c
     ${LIBUVDIR}/src/win/tty.c
     ${LIBUVDIR}/src/win/udp.c
     ${LIBUVDIR}/src/win/util.c
@@ -92,6 +92,7 @@ else()
     ${LIBUVDIR}/src/unix/udp.c)
 endif()
 
+message(STATUS ${SOURCES})
 add_library(uv ${SOURCES})
 
 if(WIN32)
